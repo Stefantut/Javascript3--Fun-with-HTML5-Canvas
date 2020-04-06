@@ -19,7 +19,6 @@
     <canvas id="draw" width="800" height="800"></canvas>
     <script>
       const colorsSection = document.querySelector(".color-palette");
-      const colorsHeight = colorsSection.offsetHeight;
 
       const canvas = document.querySelector("#draw");
       // get the context 2d or 3d
@@ -27,7 +26,7 @@
       // size up the canvas
       const html = document.querySelector("html");
       canvas.width = window.innerWidth;
-      canvas.height = html.clientHeight - colorsHeight;
+      canvas.height = html.offsetHeight - colorsSection.offsetHeight;
 
       ctx.strokeStyle = "#BADA55";
       ctx.lineJoin = "round";
@@ -64,7 +63,6 @@
       const allColors = document.querySelectorAll(".color");
       //converts nodelist to array
       const allColorsArr = Array.prototype.slice.call(allColors);
-      // const oneColor = document.querySelector(".color");
 
       function changeSelectedColor(color) {
         color.addEventListener("click", function () {
@@ -75,10 +73,6 @@
       }
       //for each selected item run the function
       allColorsArr.forEach((color) => changeSelectedColor(color));
-
-      // oneColor.addEventListener('click', function(){
-
-      // })
     </script>
 
     <style>
@@ -92,10 +86,15 @@
       }
       .color-palette .colors {
         display: flex;
+        margin: 0;
       }
       .color-palette h1 {
         margin: 0px 20px;
         color: brown;
+      }
+      .color-palette h3 {
+        margin: 0px;
+        color: olivedrab;
       }
       .color-palette .color {
         height: 20px;
