@@ -1,19 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <div class="color-palette">
+      <h1>Lets draw!</h1>
+      <h3>Pick a color:</h3>
+      <ul class="colors">
+        <li class="color isActive" data-color="#bada55"></li>
+        <li class="color" data-color="burlywood"></li>
+        <li class="color" data-color="coral"></li>
+        <li class="color" data-color="hotpink"></li>
+        <li class="color" data-color="dodgerblue"></li>
+      </ul>
+    </div>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const colorsSection = document.querySelector(".color-palette");
+      const colorsHeight = colorsSection.offsetHeight;
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      const canvas = document.querySelector("#draw");
+      // get the context 2d or 3d
+      const ctx = canvas.getContext("2d");
+      // size up the canvas
+      const html = document.querySelector("html");
+      canvas.width = window.innerWidth;
+      canvas.height = html.clientHeight - colorsHeight;
 
-</body>
+      ctx.strokeStyle = "#BADA55";
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.lineWidth = 20;
+
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+
+      function draw(e) {
+        if (!isDrawing) return; // stop the function from running when they are not moused down
+        // console.log(e);
+        // start a path
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.offsetX, e.offsetY); // values are coming from the actual event
+        ctx.stroke();
+        // lastX = e.offsetX;
+        // lastY = e.offsetY;
+        // Destructuring an array
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      }
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false));
+
+      const allColors = document.querySelectorAll(".color");
+      //converts nodelist to array
+      const allColorsArr = Array.prototype.slice.call(allColors);
+      // const oneColor = document.querySelector(".color");
+
+      function changeSelectedColor(color) {
+        color.addEventListener("click", function () {
+          ctx.strokeStyle = color.dataset.color;
+          allColorsArr.forEach((e) => e.classList.remove("isActive"));
+          color.classList.add("isActive");
+        });
+      }
+      //for each selected item run the function
+      allColorsArr.forEach((color) => changeSelectedColor(color));
+
+      // oneColor.addEventListener('click', function(){
+
+      // })
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      .color-palette {
+        display: flex;
+        align-items: center;
+      }
+      .color-palette .colors {
+        display: flex;
+      }
+      .color-palette h1 {
+        margin: 0px 20px;
+        color: brown;
+      }
+      .color-palette .color {
+        height: 20px;
+        width: 20px;
+        border: 1px solid black;
+        margin: 0 10px;
+        list-style-type: none;
+      }
+      .color-palette .color:hover {
+        cursor: pointer;
+      }
+      .color-palette .isActive {
+        border: 2px solid crimson;
+      }
+      .color-palette [data-color="#bada55"] {
+        background-color: #bada55;
+      }
+      .color-palette [data-color="burlywood"] {
+        background-color: burlywood;
+      }
+      .color-palette [data-color="coral"] {
+        background-color: coral;
+      }
+      .color-palette [data-color="hotpink"] {
+        background-color: hotpink;
+      }
+      .color-palette [data-color="dodgerblue"] {
+        background-color: dodgerblue;
+      }
+    </style>
+  </body>
 </html>
