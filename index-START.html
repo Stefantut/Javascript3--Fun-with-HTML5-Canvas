@@ -9,12 +9,22 @@
       <h1>Lets draw!</h1>
       <h3>Pick a color:</h3>
       <ul class="colors">
-        <li class="color isActive" data-color="#bada55"></li>
-        <li class="color" data-color="burlywood"></li>
-        <li class="color" data-color="coral"></li>
-        <li class="color" data-color="hotpink"></li>
-        <li class="color" data-color="dodgerblue"></li>
-        <li class="hue"></li>
+        <li class="color isActive" data-color="#bada55">
+          <span class="tooltiptext">Green</span>
+        </li>
+        <li class="color" data-color="burlywood">
+          <span class="tooltiptext">Brown</span>
+        </li>
+        <li class="color" data-color="coral">
+          <span class="tooltiptext">Orange</span>
+        </li>
+        <li class="color" data-color="hotpink">
+          <span class="tooltiptext">Pink</span>
+        </li>
+        <li class="color" data-color="dodgerblue">
+          <span class="tooltiptext">Blue</span>
+        </li>
+        <li class="hue"><span class="tooltiptext">Hue</span></li>
       </ul>
     </div>
     <canvas id="draw" width="800" height="800"></canvas>
@@ -44,6 +54,7 @@
       hueButton.addEventListener("click", () => {
         isHueSelected = true;
         hueButton.classList.add("isActive");
+        allColorsArr.forEach((color) => color.classList.remove("isActive"));
       });
       // will be called when is clicked another color beside Hue
       function removeHue() {
@@ -87,7 +98,10 @@
         color.addEventListener("click", function () {
           ctx.strokeStyle = color.dataset.color;
           allColorsArr.forEach((e) => e.classList.remove("isActive"));
-          color.classList.add("isActive");
+          if (!isHueSelected) {
+            color.classList.add("isActive");
+            hueButton.classList.remove("isActive");
+          }
           removeHue();
         });
       }
@@ -122,9 +136,14 @@
         border: 1px solid black;
         margin: 0 10px;
         list-style-type: none;
+        position: relative;
       }
       .color-palette .color:hover {
         cursor: pointer;
+      }
+      .color-palette .color:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
       }
       .color-palette .colors .isActive {
         border: 2px solid crimson;
@@ -147,16 +166,67 @@
 
       /* Hue Button */
       .color-palette .hue {
-        background-color: yellow;
+        background-image: linear-gradient(red, yellow, green);
         height: 20px;
         width: 20px;
         border: 1px solid black;
         margin: 0 10px;
         list-style-type: none;
+        position: relative;
       }
 
       .color-palette .hue:hover {
         cursor: pointer;
+      }
+
+      .color-palette .hue:hover .tooltiptext {
+        visibility: visible;
+        opacity: 1;
+      }
+      /* Tooltip text */
+      .color-palette .color .tooltiptext {
+        visibility: hidden;
+        width: 80px;
+        background-color: #bada55;
+        color: darkblue;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        border: 1px solid crimson;
+        font-weight: bold;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        top: 125%;
+        left: 50%;
+        margin-left: -40px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .color-palette .hue .tooltiptext {
+        visibility: hidden;
+        width: 80px;
+        background-color: darkblue;
+        color: #bada55;
+        text-align: center;
+        padding: 5px 0;
+        border-radius: 6px;
+        border: 1px solid crimson;
+        font-weight: bold;
+
+        /* Position the tooltip text */
+        position: absolute;
+        z-index: 1;
+        top: 125%;
+        left: 50%;
+        margin-left: -40px;
+
+        /* Fade in tooltip */
+        opacity: 0;
+        transition: opacity 0.3s;
       }
     </style>
   </body>
