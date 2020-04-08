@@ -8,6 +8,7 @@
     <div class="color-palette">
       <h1>Lets draw!</h1>
       <h3>Pick a color:</h3>
+
       <ul class="colors">
         <li class="color isActive" data-color="#bada55">
           <span class="tooltiptext">Green</span>
@@ -24,10 +25,13 @@
         <li class="color" data-color="dodgerblue">
           <span class="tooltiptext">Blue</span>
         </li>
-        <li class="hue"><span class="tooltiptext">Hue</span></li>
+        <li class="hue">
+          <span class="tooltiptext">Hue</span>
+        </li>
       </ul>
     </div>
     <canvas id="draw" width="800" height="800"></canvas>
+
     <script>
       const colorsSection = document.querySelector(".color-palette");
       const hueButton = document.querySelector(".hue");
@@ -50,17 +54,20 @@
       let lastY = 0;
       let hue = 0;
       let isHueSelected = false;
+
       // On Click of Hue button will change variable value to true
       hueButton.addEventListener("click", () => {
         isHueSelected = true;
         hueButton.classList.add("isActive");
         allColorsArr.forEach((color) => color.classList.remove("isActive"));
       });
-      // will be called when is clicked another color beside Hue
+
+      // will be called when another color is clicked beside Hue
       function removeHue() {
         isHueSelected = false;
       }
 
+      // Called on mousemove
       function draw(e) {
         if (!isDrawing) return; // stop the function from running when they are not moused down
         // console.log(e);
